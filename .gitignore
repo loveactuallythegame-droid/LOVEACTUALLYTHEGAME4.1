@@ -1,0 +1,317 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next/
+out/
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# Vuepress build output
+.vuepress/dist
+
+# Vite build output
+dist/
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary folders
+tmp/
+temp/
+
+# Build directories
+build/
+dist/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Prisma
+prisma/migrations/
+
+# Testing
+coverage/
+.coverage
+junit.xml
+
+# Storybook build outputs
+storybook-static
+
+# Temporary folders
+tmp/
+temp/
+
+# Sentry Config File
+.sentryclirc
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/fallback-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+**/public/fallback-*.js.map
+
+# Vercel
+.vercel
+
+# Turbo
+.turbo
+
+# Cypress
+cypress/videos
+cypress/screenshots
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# MSW
+public/mockServiceWorker.js
+
+# Miscellaneous
+*.tgz
+*.tar.gz
+
+# Local Netlify folder
+.netlify
+
+# Ignore uploaded files in development
+uploads/
+public/uploads/
+
+# Ignore generated documentation
+docs/generated/
+
+# Ignore sensitive files
+*.pem
+*.key
+*.cert
+secrets.json
+config/local.json
+
+# Ignore backup files
+*.backup
+*.bak
+*.orig
+
+# Ignore editor specific files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+*.sublime-workspace
+*.sublime-project
+
+# Ignore package manager lock files (uncomment if needed)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Ignore development database
+dev.db
+
+# Ignore generated types
+generated/
+
+# Ignore analytics data
+analytics/
+metrics/
+
+# Ignore user uploaded content
+user-uploads/
+evidence-uploads/
+
+# Ignore session files
+sessions/
+
+# Ignore email templates compiled
+email-templates/compiled
+
+# Ignore generated API documentation
+api-docs/
+
+# Ignore performance profiling data
+profiling/
+
+# Ignore local configuration overrides
+config/local.*
+config/development.*
+config/production.*
+
+# Ignore docker files in development
+docker-compose.override.yml
+
+# Ignore Kubernetes secrets
+k8s/secrets/
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Ignore local SSL certificates
+ssl/
+
+# Ignore backup directories
+backups/
+
+# Ignore monitoring data
+monitoring/
+
+# Ignore cache directories
+.cache/
+cache/
+
+# Ignore generated screenshots
+screenshots/
+
+# Ignore development tools
+tools/dev/
+
+# Ignore local scripts
+scripts/local/
+
+# Ignore generated changelog
+CHANGELOG.generated.md
+
+# Ignore dependency analysis
+dependency-analysis/
+
+# Ignore security scan results
+security-scan-results/
+
+# Ignore performance test results
+performance-tests/results/
+
+# Ignore local development overrides
+*.local.*
+local.*
+
+# Ignore generated service worker
+sw.js
+sw.js.map
