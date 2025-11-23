@@ -3,8 +3,8 @@
  * Integrates OpenAI for personality and ElevenLabs for voice
  */
 
-import { openaiChatCompletion } from '@/openai-api';
-import { ttsFalSubmit, ttsFalPollStatus, ttsFalFetchAudioUrl, listVoicesFal } from '@/elevenlabs-api';
+import { openaiChatCompletion } from '@/lib/openai-api';
+import { ttsFalSubmit, ttsFalPollStatus, ttsFalFetchAudioUrl, listVoicesFal } from '@/lib/murf-api';
 
 export type DrMarciePersonality = 1 | 2 | 3;
 
@@ -185,8 +185,8 @@ export class DrMarcieAI {
           text: responseText,
           voice: selectedVoice,
           speed: 1.0,
-          stability: 0.7,
-          similarity_boost: 0.8
+          pitch: 1.0,
+          format: 'mp3'
         });
         
         await ttsFalPollStatus(requestId);
@@ -220,3 +220,7 @@ export class DrMarcieAI {
 
   clearHistory(): void {
     this.conversationHistory = [];
+  }
+}
+
+export default DrMarcieAI;

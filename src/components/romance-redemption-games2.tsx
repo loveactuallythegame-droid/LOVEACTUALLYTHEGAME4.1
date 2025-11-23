@@ -12,8 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Heart, Trophy, Clock, Star, Camera, Video, CheckCircle, Play, Award, Target } from 'lucide-react';
-import { EnhancedDrMarcieAvatar } from './enhanced-dr-marcie-avatar';
-import { DrMarcieVoiceService } from './dr-marcie-voice-service';
+import { EnhancedDrMarcieAvatar } from './enhanced-dr-marcie-avatar2';
+import { DrMarcieVoiceService } from '../../dr-marcie-voice-service';
 
 interface RomanceGame {
   id: string;

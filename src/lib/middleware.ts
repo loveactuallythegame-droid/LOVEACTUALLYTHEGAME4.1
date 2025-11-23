@@ -33,6 +33,8 @@ export function middleware(request: NextRequest) {
   // API rate limiting (basic implementation)
   if (pathname.startsWith('/api/')) {
     // Derive client IP from standard headers since NextRequest has no `ip` property
+    const forwardedFor = request.headers.get('x-forwarded-for') ?? ''
+    const realIp = request.headers.get('x-real-ip') ?? ''
     const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'anonymous';
     const userAgent = request.headers.get('user-agent') ?? 'unknown'
     

@@ -11,8 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { Heart, TrendingUp, TrendingDown, Minus, Star, Target, Award, Calendar, AlertTriangle, CheckCircle, Brain, Activity, Zap, Users, Clock, BarChart3, TrendingDown as TrendingDownIcon } from 'lucide-react';
-import { EnhancedDrMarcieAvatar } from './enhanced-dr-marcie-avatar';
-import { DrMarcieVoiceService } from './dr-marcie-voice-service';
+import { EnhancedDrMarcieAvatar } from './enhanced-dr-marcie-avatar2';
+import { ttsFalSubmit, ttsFalPollStatus, ttsFalFetchAudioUrl } from '@/lib/murf-api';
 
 interface DailyMetric {
   id: string;
@@ -187,7 +187,7 @@ export function DailyMetricsDashboard({ userId, coupleId, userName }: DailyMetri
         await fetchMetrics();
         
         // Generate Dr. Marcie response based on metrics
-        generateMetricsResponse();
+        await generateMetricsResponse();
       }
     } catch (error) {
       console.error('Failed to submit daily metric:', error);
@@ -196,7 +196,7 @@ export function DailyMetricsDashboard({ userId, coupleId, userName }: DailyMetri
     }
   };
 
-  const generateMetricsResponse = () => {
+  const generateMetricsResponse = async () => {
     const avgScore = (trustLevel + loveLevel + connectionLevel) / 3;
     let message = "";
 
@@ -208,8 +208,36 @@ export function DailyMetricsDashboard({ userId, coupleId, userName }: DailyMetri
       message = `Hmm, ${userName}, today's numbers are telling a story we need to address. With trust at ${trustLevel}, love at ${loveLevel}, and connection at ${connectionLevel}, it looks like there's some work to be done. But hey, recognizing it is the first step! Let's turn this around! 💕`;
     }
 
-    // Play Dr. Marcie's voice response
-    DrMarcieVoiceService.speak(message, 'daily_metrics');
+    // Play Dr. Marcie's voice response using Murf
+    try {
+      const requestId = await ttsFalSubmit({
+        text: message,
+        voice: 'en-US-olivia', // Therapeutic voice for Dr. Marcie
+        speed: 1.0,
+        pitch: 1.0,
+        format: 'mp3'
+      });
+      
+      // Poll for completion and play audio
+      const pollAudio = async () => {
+        const result = await ttsFalPollStatus(requestId);
+        if (result.status === 'succeeded') {
+          const audioUrl = await ttsFalFetchAudioUrl(requestId);
+          if (audioUrl) {
+            // Play the audio
+            const audio = new Audio(audioUrl);
+            audio.play().catch(error => console.error('Audio playback failed:', error));
+          }
+        } else if (result.status === 'processing') {
+          setTimeout(pollAudio, 1000); // Check again in 1 second
+        }
+      };
+      
+      pollAudio();
+    } catch (error) {
+      console.error('Failed to generate voice response:', error);
+      // Fallback: just show the message without voice
+    }
   };
 
   const getTrendIcon = (trend: string) => {

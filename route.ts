@@ -298,3 +298,8 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json(
       { success: false, error: 'Failed to delete couple' },
       { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}

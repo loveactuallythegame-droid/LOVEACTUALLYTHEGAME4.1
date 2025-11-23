@@ -1,11 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000', '*.vercel.app'],
-    },
-  },
-  
   // Enable static optimization
   output: 'standalone',
   
@@ -174,9 +168,6 @@ const nextConfig = {
   // Strict mode for better development experience
   reactStrictMode: true,
   
-  // Enable SWC minification
-  swcMinify: true,
-  
   // ESLint configuration
   eslint: {
     dirs: ['src', 'pages', 'components', 'lib', 'utils'],
@@ -188,15 +179,12 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   
+  // Server components external packages
+  serverExternalPackages: ['prisma', '@prisma/client'],
+  
   // Experimental features for better performance
   experimental: {
-    // Enable server components
-    serverComponentsExternalPackages: ['prisma', '@prisma/client'],
-    
-    // Optimize CSS
-    optimizeCss: true,
-    
-    // Enable experimental features
+    // Server actions configuration
     serverActions: {
       allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },

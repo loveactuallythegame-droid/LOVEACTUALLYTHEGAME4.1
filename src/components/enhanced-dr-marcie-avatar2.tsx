@@ -8,7 +8,7 @@ import { Volume2, VolumeX, Sparkles, Heart, MessageCircle, Clipboard } from 'luc
 import { DrMarcieAI, DrMarcieResponse, DrMarciePersonality } from '@/lib/dr-marcie-ai';
 
 interface EnhancedDrMarcieAvatarProps {
-  personalityLevel: DrMarciePersonality;
+  personalityLevel?: DrMarciePersonality;
   coupleBackstory?: string;
   onResponseReceived?: (response: DrMarcieResponse) => void;
   autoSpeak?: boolean;
@@ -22,7 +22,7 @@ interface EnhancedDrMarcieAvatarProps {
 }
 
 const EnhancedDrMarcieAvatar: React.FC<EnhancedDrMarcieAvatarProps> = ({
-  personalityLevel,
+  personalityLevel = 1,
   coupleBackstory = '',
   onResponseReceived,
   autoSpeak = true,

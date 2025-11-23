@@ -3,8 +3,8 @@
  * Comprehensive hosting system that ensures Dr. Marcie is present and engaged in every activity
  */
 
-import { openaiChatCompletion } from '@/openai-api';
-import { ttsFalSubmit, ttsFalPollStatus, ttsFalFetchAudioUrl } from '@/elevenlabs-api';
+import { openaiChatCompletion } from '@/lib/openai-api';
+import { ttsFalSubmit, ttsFalPollStatus, ttsFalFetchAudioUrl } from '@/lib/elevenlabs-api';
 import type { DrMarciePersonality } from '@/lib/dr-marcie-ai';
 
 export interface OmnipresentHostingContext {
@@ -543,7 +543,7 @@ export class OmnipresentDrMarcie {
     }
   }
 
-  private async generateResponse(prompt: string, contextType: string, contextInfo: string): Promise<{ text: string; audioUrl?: string }> {
+  private async generateResponse(prompt: string, contextType: string, contextInfo: string): Promise<{ text: string; audioUrl?: string; contextType: string }> {
     const systemPrompt = this.getPersonalityPrompt();
     const fullPrompt = `${prompt}\n\n${contextInfo}`;
 
@@ -588,7 +588,8 @@ export class OmnipresentDrMarcie {
 
     return {
       text: responseText,
-      audioUrl
+      audioUrl,
+      contextType
     };
   }
 
@@ -663,6 +664,7 @@ export class OmnipresentDrMarcie {
 
     return {
       text: fallbackMessages[phase as keyof typeof fallbackMessages] || "I'm here with you both, working through this together.",
+      contextType: phase,
       hostingPhase: phase,
       shouldContinue: true,
       nextAction: 'wait_for_response',
