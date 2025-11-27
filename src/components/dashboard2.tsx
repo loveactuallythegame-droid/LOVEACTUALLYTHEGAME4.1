@@ -29,7 +29,7 @@ import EnhancedSOSFightSolver from '@/components/enhanced-sos-fight-solver';
 import AdvancedSettingsPanel from '@/components/advanced-settings-panel';
 import { ComprehensiveActivityManager } from '@/lib/comprehensive-activity-system';
 import { DailyMetricsDashboard } from '@/components/daily-metrics-dashboard';
-import { EnhancedRomanceRedemption } from '@/components/enhanced-romance-redemption';
+import { RomanceRedemptionGames } from '@/components/romance-redemption-games2';
 import { CompetitionDashboard } from '@/components/competition-dashboard';
 import { DrMarciePersonality } from '@/lib/dr-marcie-ai';
 
@@ -83,7 +83,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   userName,
   personalityLevel
 }) => {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'game' | 'fight-solver' | 'settings'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'game' | 'fight-solver' | 'settings' | 'daily-metrics' | 'romance-redemption' | 'competition'>('dashboard');
   const [coupleData, setCoupleData] = useState<CoupleData | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -781,3 +781,9 @@ const Dashboard: React.FC<DashboardProps> = ({
             />
           </TabsContent>
         </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

@@ -52,9 +52,17 @@ const MiniKitContext = createContext<MiniKitContextType>({
 
 export const useMiniKit = () => useContext(MiniKitContext);
 
-export default function MiniKitProvider({ 
-  children, 
-  appId = 'app_love_actually_game_couples_therapy' 
+// Create fallback function
+const createFallbackMiniKit = () => ({
+  install: () => {},
+  isInstalled: () => false,
+  getUser: () => null,
+  verify: () => Promise.resolve({ success: false, error: 'MiniKit not available' })
+});
+
+export default function MiniKitProvider({
+  children,
+  appId = 'app_love_actually_game_couples_therapy'
 }: MiniKitProviderProps) {
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
   const [isWorldApp, setIsWorldApp] = useState<boolean>(false);
@@ -62,35 +70,55 @@ export default function MiniKitProvider({
   const [username, setUsername] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [MiniKit, setMiniKit] = useState<any>(mockMiniKit);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const initializeMiniKit = async () => {
       try {
-        // Dynamic import to avoid SSR issues
-        const { MiniKit: WorldMiniKit } = await import('@worldcoin/minikit-js');
+        // Dynamic import to avoid SSR issues - fallback for missing module
+        let WorldMiniKit: any = null;
         
-        WorldMiniKit.install(appId);
-        const installed = WorldMiniKit.isInstalled();
+        if (typeof window !== 'undefined') {
+          try {
+            // @ts-ignore - Module might not exist in development
+            const module = await import('@worldcoin/minikit-js');
+            WorldMiniKit = module.MiniKit;
+          } catch (importError) {
+            console.warn('MiniKit not available, using fallback');
+            WorldMiniKit = createFallbackMiniKit();
+          }
+        } else {
+          // Server-side - use fallback
+          WorldMiniKit = createFallbackMiniKit();
+        }
+
+        if (WorldMiniKit) {
+          WorldMiniKit.install(appId);
+          const installed = WorldMiniKit.isInstalled();
         
-        setMiniKit(WorldMiniKit);
-        setIsInstalled(installed);
-        setIsWorldApp(installed);
-        
-        if (installed) {
-          // Check if user is already authenticated
-          const storedWallet = WorldMiniKit.walletAddress;
-          const storedUsername = WorldMiniKit.user?.username;
+          setMiniKit(WorldMiniKit);
+          setIsInstalled(installed);
+          setIsWorldApp(installed);
           
-          if (storedWallet) {
-            setWalletAddress(storedWallet);
-            setUsername(storedUsername);
-            setIsAuthenticated(true);
+          if (installed) {
+            // Check if user is already authenticated
+            const storedWallet = WorldMiniKit.walletAddress;
+            const storedUsername = WorldMiniKit.user?.username;
+            
+            if (storedWallet) {
+              setWalletAddress(storedWallet);
+              setUsername(storedUsername);
+              setIsAuthenticated(true);
+            }
           }
         }
       } catch (error) {
         console.error('Failed to initialize MiniKit:', error);
         setIsInstalled(false);
         setIsWorldApp(false);
+        setMiniKit(createFallbackMiniKit());
+      } finally {
+        setLoading(false);
       }
     };
 

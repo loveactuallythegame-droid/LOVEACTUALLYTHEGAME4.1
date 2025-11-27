@@ -27,7 +27,32 @@ import {
 } from 'lucide-react';
 import { EnhancedDrMarcieAvatar } from '@/components/enhanced-dr-marcie-avatar';
 import type { DrMarciePersonality } from '@/lib/dr-marcie-ai';
-import type { ComprehensiveActivity, ComprehensiveActivityQuestion } from '@/lib/omnipresent-dr-marcie';
+// Fallback types for missing module
+interface ComprehensiveActivity {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: number;
+  type?: string;
+  estimatedTime?: number;
+  pointValue?: number;
+  questions?: ComprehensiveActivityQuestion[];
+}
+
+interface ComprehensiveActivityQuestion {
+  id: string;
+  type: string;
+  prompt: string;
+  text?: string;
+  options?: string[];
+  correctAnswer?: string;
+  pointValue?: number;
+  timeLimit?: number;
+}
+
+// Original import - commented out for now
+// import type { ComprehensiveActivity, ComprehensiveActivityQuestion } from '@/lib/omnipresent-dr-marcie';
 
 interface OmnipresentActivityInterfaceProps {
   coupleId: string;

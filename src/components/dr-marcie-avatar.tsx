@@ -1,171 +1,134 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Volume2, VolumeX, Sparkles } from 'lucide-react';
-import { DrMarcieAI, DrMarcieResponse, DrMarciePersonality } from '@/lib/dr-marcie-ai';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+
+type DrMarcieMood = 'happy' | 'sassy' | 'serious' | 'concerned' | 'excited';
 
 interface DrMarcieAvatarProps {
-  personalityLevel: DrMarciePersonality;
-  coupleBackstory?: string;
-  onResponseReceived?: (response: DrMarcieResponse) => void;
-  autoSpeak?: boolean;
+  mood?: DrMarcieMood;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
+  showPulse?: boolean;
+  showSpeechBubble?: boolean;
+  speechText?: string;
 }
 
-const DrMarcieAvatar: React.FC<DrMarcieAvatarProps> = ({
-  personalityLevel,
-  coupleBackstory = '',
-  onResponseReceived,
-  autoSpeak = true,
-  className = ''
+const moodColors = {
+  happy: 'from-pink-400 to-purple-400',
+  sassy: 'from-purple-500 to-pink-500',
+  serious: 'from-purple-600 to-purple-700',
+  concerned: 'from-pink-500 to-red-500',
+  excited: 'from-pink-400 to-yellow-400',
+};
+
+const moodAnimations = {
+  happy: { scale: [1, 1.05, 1], rotate: [-2, 2, -2] },
+  sassy: { rotate: [0, -5, 5, 0] },
+  serious: { scale: 1 },
+  concerned: { y: [0, -2, 0] },
+  excited: { scale: [1, 1.1, 1], rotate: [-5, 5, -5] },
+};
+
+export const DrMarcieAvatar: React.FC<DrMarcieAvatarProps> = ({
+  mood = 'happy',
+  size = 'md',
+  className,
+  showPulse = true,
+  showSpeechBubble = false,
+  speechText = "Let's work on this together, lovebirds!",
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [currentResponse, setCurrentResponse] = useState<DrMarcieResponse | null>(null);
-  const [audioPlaying, setAudioPlaying] = useState<boolean>(false);
-  const [drMarcie] = useState<DrMarcieAI>(() => new DrMarcieAI(personalityLevel, coupleBackstory));
-
-  useEffect(() => {
-    drMarcie.updatePersonality(personalityLevel);
-    drMarcie.updateCoupleBackstory(coupleBackstory);
-  }, [personalityLevel, coupleBackstory, drMarcie]);
-
-  const getPersonalityBadge = (level: DrMarciePersonality): { label: string; color: string } => {
-    switch (level) {
-      case 1:
-        return { label: 'Tough Love Rookie', color: 'bg-green-500' };
-      case 2:
-        return { label: 'Reality Check Specialist', color: 'bg-yellow-500' };
-      case 3:
-        return { label: 'Radical Truth Wizard', color: 'bg-red-500' };
-      default:
-        return { label: 'Therapist', color: 'bg-blue-500' };
-    }
+  const sizeClasses = {
+    sm: 'w-16 h-16',
+    md: 'w-24 h-24',
+    lg: 'w-32 h-32',
+    xl: 'w-40 h-40',
   };
 
-  const playAudio = async (audioUrl: string): Promise<void> => {
-    try {
-      setAudioPlaying(true);
-      const audio = new Audio(audioUrl);
-      
-      audio.onended = () => setAudioPlaying(false);
-      audio.onerror = () => setAudioPlaying(false);
-      
-      await audio.play();
-    } catch (error) {
-      console.error('Audio playback failed:', error);
-      setAudioPlaying(false);
-    }
+  const avatarVariants = {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { 
+      scale: 1, 
+      opacity: 1,
+      ...moodAnimations[mood]
+    },
+    hover: { scale: 1.05 },
   };
-
-  const generateResponse = async (
-    prompt: string,
-    contextType: DrMarcieResponse['contextType'] = 'general',
-    additionalContext?: any
-  ): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const response = await drMarcie.generateResponse(prompt, contextType, additionalContext);
-      setCurrentResponse(response);
-      
-      if (onResponseReceived) {
-        onResponseReceived(response);
-      }
-
-      if (autoSpeak && response.audioUrl) {
-        await playAudio(response.audioUrl);
-      }
-    } catch (error) {
-      console.error('Failed to generate Dr. Marcie response:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const personalityInfo = getPersonalityBadge(personalityLevel);
 
   return (
-    <Card className={`relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 ${className}`}>
-      <CardContent className="p-6">
-        {/* Avatar Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              {/* Dr. Marcie Avatar */}
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/efd80c25-5b0e-4777-a757-13e03830fcba-5dZzAQYpcomryEQnd5LAMQ43cAKG5T"
-                    alt="Dr. Marcie Liss - AI Therapist"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              {isLoading && (
-                <div className="absolute -inset-1 rounded-full border-2 border-pink-400 border-t-transparent animate-spin" />
-              )}
-            </div>
-            <div>
-              <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">Dr. Marcie Liss</h3>
-              <Badge className={`${personalityInfo.color} text-white text-xs`}>
-                {personalityInfo.label}
-              </Badge>
-            </div>
+    <div className={cn('relative inline-flex flex-col items-center', className)}>
+      {/* Avatar Container */}
+      <motion.div
+        className={cn(
+          'relative rounded-full overflow-hidden',
+          'bg-gradient-to-br from-pink-400 to-purple-600',
+          'border-4 border-white shadow-lg',
+          sizeClasses[size],
+          showPulse && 'pulse-gentle'
+        )}
+        variants={avatarVariants}
+        initial="initial"
+        animate="animate"
+        whileHover="hover"
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        {/* Inner Glow Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full" />
+        
+        {/* Placeholder for Dr. Marcie's Image */}
+        <div className="w-full h-full flex items-center justify-center">
+          <div className={cn(
+            'text-white text-2xl font-bold',
+            mood === 'sassy' && 'rotate-12',
+            mood === 'serious' && 'text-lg'
+          )}>
+            Dr. M
           </div>
-          
-          {currentResponse?.audioUrl && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => currentResponse.audioUrl && playAudio(currentResponse.audioUrl)}
-              disabled={audioPlaying}
-              className="text-pink-600 hover:text-pink-700"
-            >
-              {audioPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            </Button>
-          )}
         </div>
 
-        {/* Response Display */}
-        {currentResponse && (
-          <div className="space-y-3">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-pink-200 dark:border-pink-800">
-              <p className="text-gray-900 dark:text-gray-100 leading-relaxed">
-                {currentResponse.text}
-              </p>
-            </div>
-            
-            {currentResponse.contextType && (
-              <div className="flex justify-end">
-                <Badge variant="outline" className="text-xs text-pink-600 dark:text-pink-400">
-                  {currentResponse.contextType.replace('_', ' ')}
-                </Badge>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Mood Indicator Ring */}
+        <div className={cn(
+          'absolute -inset-1 rounded-full',
+          'bg-gradient-to-r',
+          moodColors[mood],
+          'opacity-60 blur-sm',
+          'animate-pulse'
+        )} />
+      </motion.div>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex items-center space-x-2 text-pink-600 dark:text-pink-400">
-            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" />
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-            <span className="text-sm">Dr. Marcie is thinking...</span>
+      {/* Speech Bubble */}
+      {showSpeechBubble && speechText && (
+        <motion.div
+          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 translate-y-full"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="speech-bubble font-marcie text-sm text-primary max-w-xs">
+            {speechText}
           </div>
-        )}
+        </motion.div>
+      )}
 
-        {/* Initial State */}
-        {!currentResponse && !isLoading && (
-          <div className="text-center py-4">
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Ready to help with your relationship journey! 💖
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      {/* Mood Label */}
+      <motion.div
+        className="absolute -bottom-8 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <span className={cn(
+          'text-xs font-accents px-2 py-1 rounded-full',
+          'bg-gradient-to-r',
+          moodColors[mood],
+          'text-white'
+        )}>
+          {mood}
+        </span>
+      </motion.div>
+    </div>
   );
 };
+
+export default DrMarcieAvatar;

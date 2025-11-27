@@ -442,13 +442,17 @@ const EnhancedComprehensiveDashboard: React.FC<EnhancedComprehensiveDashboardPro
 
         {/* Main Dashboard Tabs */}
         <Tabs value={currentTab} onValueChange={setCurrentTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8 bg-white/50 dark:bg-gray-800/50">
+          <TabsList className="grid w-full grid-cols-9 bg-white/50 dark:bg-gray-800/50">
             <TabsTrigger value="overview" className="flex items-center space-x-1">
               <BarChart3 className="w-4 h-4" />
               <span className="hidden lg:inline">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="activities" className="flex items-center space-x-1">
+            <TabsTrigger value="games" className="flex items-center space-x-1">
               <Gamepad2 className="w-4 h-4" />
+              <span className="hidden lg:inline">Games</span>
+            </TabsTrigger>
+            <TabsTrigger value="activities" className="flex items-center space-x-1">
+              <Target className="w-4 h-4" />
               <span className="hidden lg:inline">Activities</span>
             </TabsTrigger>
             <TabsTrigger value="browser" className="flex items-center space-x-1">
@@ -537,6 +541,169 @@ const EnhancedComprehensiveDashboard: React.FC<EnhancedComprehensiveDashboardPro
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          {/* Games Tab - New Disney-Quality Game System */}
+          <TabsContent value="games" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                🎮 Interactive Games Hub
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                1,400+ Disney-quality games to deepen your connection with magical experiences
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Quick Game Access */}
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-t-lg">
+                  <CardTitle className="flex items-center text-lg">
+                    <Gamepad2 className="w-6 h-6 mr-2" />
+                    Quick Play
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-4">
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Jump into a game right now! Perfect for when you have a few minutes to connect.
+                  </p>
+                  <Button
+                    onClick={() => {
+                      // Navigate to games page
+                      window.location.href = '/games';
+                    }}
+                    className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Start Playing Now
+                  </Button>
+                  <div className="text-center">
+                    <Badge variant="outline" className="text-xs">
+                      <Clock className="w-3 h-3 mr-1" />
+                      5-60 min games
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Game Categories Preview */}
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-t-lg">
+                  <CardTitle className="flex items-center text-lg">
+                    <Star className="w-6 h-6 mr-2" />
+                    Popular Categories
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-3">
+                  <div className="space-y-2">
+                    {[
+                      { name: 'Emotional Connection', icon: '💕', count: 200 },
+                      { name: 'Conflict Resolution', icon: '🕊️', count: 200 },
+                      { name: 'Romance & Spark', icon: '✨', count: 200 },
+                      { name: 'Creative Chaos', icon: '🎨', count: 200 }
+                    ].map((category, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg">{category.icon}</span>
+                          <span className="font-body text-sm">{category.name}</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {category.count}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    onClick={() => {
+                      window.location.href = '/games';
+                    }}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Browse All Categories
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Today's Featured Games */}
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-t-lg">
+                  <CardTitle className="flex items-center text-lg">
+                    <Trophy className="w-6 h-6 mr-2" />
+                    Featured Today
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-4">
+                  <div className="space-y-3">
+                    <div className="p-3 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">Truth or Trust</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Share vulnerable thoughts through voice messages</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <Badge className="bg-green-500 text-white text-xs">Level 2</Badge>
+                        <span className="text-xs text-gray-500">5 min</span>
+                      </div>
+                    </div>
+                    <div className="p-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">Love Language Showdown</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Discover how you both give and receive love</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <Badge className="bg-blue-500 text-white text-xs">Level 1</Badge>
+                        <span className="text-xs text-gray-500">3 min</span>
+                      </div>
+                    </div>
+                    <div className="p-3 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">6-Second Kiss</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Hold a kiss for 6 seconds with motion detection</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <Badge className="bg-yellow-500 text-white text-xs">Level 1</Badge>
+                        <span className="text-xs text-gray-500">1 min</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => {
+                      window.location.href = '/games';
+                    }}
+                    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Play Featured Games
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Game Stats Preview */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardContent className="p-4 text-center">
+                  <div className="text-3xl mb-2">🎯</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">1,400+</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Total Games</div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardContent className="p-4 text-center">
+                  <div className="text-3xl mb-2">🎮</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">6</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Categories</div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardContent className="p-4 text-center">
+                  <div className="text-3xl mb-2">⚡</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">∞</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Fun Moments</div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                <CardContent className="p-4 text-center">
+                  <div className="text-3xl mb-2">🏆</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">24/7</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Available</div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Activity Browser Tab */}
